@@ -37,11 +37,46 @@ set.seed(1)
 ```{r, message = FALSE}
 arms_df = 
   tibble(
-    file_path = 
-           list.files(path = "data", full.names = TRUE)
-    ) %>% 
-  mutate(data = map(file_path, read_csv)) %>% 
-  unnest()
+    files = list.files(path = "data", full.names = TRUE)
+    ) 
+```
 
+#### Data cleaning and tidying
+
+```{r,message = FALSE}
+tidy_arms_df = 
+  arms_df %>% 
+  mutate(
+    participant_data = map(files, read_csv), # Read in each subject's data from the csv file
+    arm_group = ifelse(str_detect(files, "exp"), "Experimental", "Control"), 
+    # Determine the arm group from file name
+    subject_id = as.factor(str_extract(files, "\\d+"))
+  ) %>% 
+  unnest(participant_data) %>%  # unnest the participant data into rows
+  pivot_longer(
+    week_1:week_8, 
+    names_to = "week", 
+    values_to = "measurements"
+  ) %>% #transform the week columns into a "long" format
+  mutate(week = parse_number(week)) # convert the week identifier to a numeric value
+```
+
+#### Spaghetti plot to visualize measurements for each participant across different time points
+
+```{r}
+tidy_arms_df %>%
+  ggplot(
+    aes(x = week, y = measurements, group = subject_id, color = subject_id)
+    ) + # ensure lines are drawn for each subject
+  geom_line(alpha = 0.6) + # set transparency to distinguish overlapping lines
+  facet_wrap(.~ arm_group) + # use facet_wrap to separate the arm groups into different panels
+  labs(
+    title = "Participant Measurements Over the Study Period by arms group",
+    subtitle = "Each line represents a single participant's measurements over time",
+    x = "Week",
+    y = "Measurement",
+    color = "Subject ID"
+  )
+  
 ```
 
