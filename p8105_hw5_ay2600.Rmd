@@ -80,3 +80,11 @@ tidy_arms_df %>%
   
 ```
 
+#### Plot Description and comparison between groups
+
+- The control group does not show a clear trend over time; the lines fluctuate up and down without a consistent direction. While, the experimental group seems to show a slight upward trend as time progresses.
+- The experimental group appears to have higher overall measurements compared to the control group. While the control group measurements are more clustered. 
+- The experimental group's lines show more divergence as time progresses, suggesting a possible effect of the experimental conditions leading to greater individual differences in outcomes.
+
+
+
