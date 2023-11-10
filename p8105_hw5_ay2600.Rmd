@@ -1,0 +1,47 @@
+---
+title: "Data Science HW 5"
+author: "Hingling Yu"
+date: "2023-11-08"
+output: github_document
+geometry: margin = 0.85in
+fontsize: 12pt
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(rvest)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+set.seed(1)
+```
+
+
+## Problem 2
+
+
+#### Use the `list.files` to create datafrane of file names
+```{r, message = FALSE}
+arms_df = 
+  tibble(
+    file_path = 
+           list.files(path = "data", full.names = TRUE)
+    ) %>% 
+  mutate(data = map(file_path, read_csv)) %>% 
+  unnest()
+
+```
+
