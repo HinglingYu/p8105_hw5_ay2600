@@ -125,6 +125,10 @@ results %>%
 
 ```
 
+#### Association between effect size and power
+
+- There is a direct relationship between effect size and power. As the true mean value (mu) increases, the power of the test also increases. The association shown in the plot is the fundamental principle in hypothesis testing. The larger the true effect, the easier it is to detect with a statistical test, assuming other factors such as sample size and variability remain constant.
+
 #### Plot of the average estimate of mu 
 ```{r}
 results %>%
