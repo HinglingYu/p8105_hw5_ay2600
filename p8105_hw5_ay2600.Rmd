@@ -115,7 +115,37 @@ results = map_dfr(0:6, sim_output)
 ```
 
 
+#### Plot the proportion of times the null was rejected (power)
+```{r}
+results %>% 
+  ggplot(aes(x = mu, y = power)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Power by True Mean Value", x = "True Mean Value (Mu)", y = "Power")
 
+```
+
+#### Plot of the average estimate of mu 
+```{r}
+results %>%
+  gather(
+    key = "estimate_type", 
+    value = "estimate_value", 
+    mean_estimate, 
+    mean_estimate_reject
+  ) %>%
+  mutate(estimate_type = factor(estimate_type, 
+                                levels = c("mean_estimate", "mean_estimate_reject"),
+                                labels = c("Average Estimate", "Average Estimate (Reject Null)"))) %>%
+  
+  ggplot(aes(x = mu, y = estimate_value, color = estimate_type)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Average Estimate of Mu by True Mean Value",
+       x = "True Mean Value (Mu)", y = "Average Estimate of Mu") +
+  scale_color_manual(values = c("blue", "orange")) +
+  guides(color = guide_legend(title = "Estimate Type"))
+```
 
 
 
